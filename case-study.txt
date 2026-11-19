@@ -1,0 +1,100 @@
+ OLYMP / FULL-STACK SOFTWARE ENGINEER
+
+
+
+ Technical Case Study
+ AI-powered Word Document Editor
+ Submission deadline: Thursday, 19 November 2026
+
+
+
+
+ The challenge
+ At Olymp, we are building an AI-native practice management platform that helps therapists spend
+ less time on documentation and administrative work. One challenge we are exploring is how AI
+ agents can reliably edit existing Word documents without damaging their structure or formatting.
+
+ Your task is to build a LangGraph-based AI agent that modifies existing Microsoft Word (.docx)
+ documents in response to natural-language instructions.
+
+
+ Core requirements
+ • Use Python and LangGraph to implement the agent.
+
+ • Implement the document-editing tools yourself. Document-processing libraries (e.g.,
+   python-docx) are allowed.
+
+ • Support natural-language requests to insert, replace, and remove text. Additional editing
+   capabilities are up to you.
+
+ • Preserve unaffected formatting and document elements, including existing styled text, images,
+   and tables. Changes should be limited to what the instruction requires.
+
+ • Do not use a prebuilt coding-agent harness, shell access, or general-purpose code execution as
+   the runtime mechanism by which your agent edits documents.
+
+
+ Freedom of implementation
+ You decide how to structure the graph, define tools, handle ambiguous instructions, validate
+ changes, and expose the functionality. A CLI or API is sufficient; a frontend is optional. We value
+ thoughtful trade-offs and a reliable solution over the largest possible feature set.
+
+ Using AI coding assistants such as Codex, Claude Code, or Cursor during development is
+ permitted. The restriction above applies to the delivered agent’s document-editing architecture,
+ not your development environment.
+
+
+ What to submit
+ • A Git repository with your implementation and clear setup/run instructions.
+
+ • A short README describing the architecture, key decisions, and known limitations.
+
+ • At least one sample input document, editing instruction, and resulting output document.
+
+
+
+
+OLYMP / TECHNICAL CASE STUDY                                                                           1
+ • An explanation of how you tested that content and formatting outside the requested edit remain
+    intact.
+
+
+ Evaluation
+ We will focus on editing reliability and document integrity, architecture and code quality,
+ appropriate use of LangGraph, and the quality of testing and technical decisions. We do not expect
+ support for every possible Word feature; transparent limitations are preferable to unsupported
+ claims.
+
+
+ Optional challenge: Show us how you build software
+ At Olymp, we care not only about what you build, but also how you build it. Our long-term
+ ambition is to automate increasingly large parts of the software-development lifecycle through
+ AI-driven engineering workflows.
+
+ If you have developed your own AI-assisted development process, we would be interested to see it.
+ This could involve automated planning and review, test-and-fix loops, custom agent orchestration,
+ or another approach that goes beyond simply prompting an off-the-shelf coding assistant.
+
+ If applicable, briefly explain:
+
+ • How your development workflow is structured, and which steps are automated.
+
+ • How you verify and improve AI-generated code.
+
+ • What you have customized or built beyond standard tools, ideally demonstrated through this case
+    study.
+
+ This section is entirely optional. You do not need a custom AI-development framework to
+ succeed. Candidates using conventional workflows will be evaluated fairly on the core challenge; we
+ value sound engineering judgment regardless of tooling.
+
+
+
+ Practical note: Use synthetic or otherwise non-sensitive sample documents. Do not include real patient or health
+ data in your submission.
+
+
+
+
+OLYMP / TECHNICAL CASE STUDY                                                                                        2
+
