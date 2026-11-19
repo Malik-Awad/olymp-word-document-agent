@@ -52,7 +52,7 @@ The runtime does not expose shell access or general code execution. All document
 - Existing run properties (bold, italic, size, color, fonts, character styles) are retained by changing text nodes rather than recreating runs.
 - Images and other drawing XML are left intact.
 - Tables, section properties, hyperlinks, comments, and document metadata are preserved by the source package unless an edit itself requires text outside a run.
-- Verification compares image, table, and section counts and checks whether paragraphs outside the matched text are unchanged.
+- Verification ensures package entries are not removed, permits expected Word metadata/header/footer entries, and compares media, table, image, header, and footer counts.
 
 ## Testing
 
