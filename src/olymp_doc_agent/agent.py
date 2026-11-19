@@ -3,11 +3,14 @@ from pathlib import Path
 from docx import Document
 
 from .editor import apply_operation, count_matches
-from .planner import plan_instruction
+from .planner import plan_instruction, plan_with_model
 from .verification import package_media, structural_signature, verify_input_output
 
 
 class EditAgent:
+    def __init__(self, *, offline: bool = False):
+        self.offline = offline
+
     def run(self, input_path: str, instruction: str, output_path: str) -> dict:
         source = Path(input_path)
         destination = Path(output_path)
@@ -19,7 +22,13 @@ class EditAgent:
 
         def plan(state: dict) -> dict:
             try:
-                operations = plan_instruction(state["instruction"])
+                if state["offline"]:
+                    operations = plan_instruction(state["instruction"])
+                else:
+                    operations = plan_with_model(
+                        state["instruction"],
+                        Document(state["input_path"]),
+                    )
                 state["operations"] = operations
             except Exception as exc:
                 state["error"] = str(exc)
@@ -105,27 +114,32 @@ class EditAgent:
             "input_path": str(source),
             "output_path": str(destination),
             "instruction": instruction,
+            "offline": self.offline,
             "operations": None,
             "matches": 0,
             "error": None,
         }
         try:
             from langgraph.graph import END, StateGraph
-
-            builder = StateGraph(dict)
-            builder.add_node("plan", plan)
-            builder.add_node("validate", validate)
-            builder.add_node("edit", edit)
-            builder.add_node("verify", verify)
-            builder.set_entry_point("plan")
-            builder.add_edge("plan", "validate")
-            builder.add_edge("validate", "edit")
-            builder.add_edge("edit", "verify")
-            builder.add_edge("verify", END)
-            graph = builder.compile()
-            return graph.invoke(initial)
-        except ImportError:
+        except ImportError as exc:
+            if not self.offline:
+                raise RuntimeError(
+                    f"LangGraph could not be loaded: {exc}"
+                ) from exc
             state = plan(initial)
             state = validate(state)
             state = edit(state)
             return verify(state)
+
+        builder = StateGraph(dict)
+        builder.add_node("plan", plan)
+        builder.add_node("validate", validate)
+        builder.add_node("edit", edit)
+        builder.add_node("verify", verify)
+        builder.set_entry_point("plan")
+        builder.add_edge("plan", "validate")
+        builder.add_edge("validate", "edit")
+        builder.add_edge("edit", "verify")
+        builder.add_edge("verify", END)
+        graph = builder.compile()
+        return graph.invoke(initial)

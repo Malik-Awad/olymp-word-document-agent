@@ -10,7 +10,7 @@ from olymp_doc_agent.editor import (
     paragraph_plain_text,
 )
 from olymp_doc_agent.models import EditOperation
-from olymp_doc_agent.planner import plan_instruction
+from olymp_doc_agent.planner import _operation_from_data, plan_instruction
 
 
 def test_replace_preserves_run_formatting():
@@ -101,4 +101,40 @@ def test_planner_examples():
     inserted = plan_instruction("Insert 'urgent ' before 'review'")
     assert inserted[0].position == "before"
     assert plan_instruction("Append 'Thank you.'")[0].position == "end"
+
+
+def test_model_operation_validation():
+    operation = _operation_from_data(
+        {
+            "action": "replace",
+            "target": "weekly check-in",
+            "replacement": "monthly check-in",
+        }
+    )
+    assert operation == EditOperation(
+        "replace",
+        "weekly check-in",
+        "monthly check-in",
+    )
+
+
+def test_model_operation_rejects_empty_target():
+    import pytest
+
+    with pytest.raises(ValueError, match="require a target"):
+        _operation_from_data({"action": "remove", "target": ""})
+
+
+def test_model_operation_rejects_invalid_insert_position():
+    import pytest
+
+    with pytest.raises(ValueError, match="position"):
+        _operation_from_data(
+            {
+                "action": "insert",
+                "target": "review",
+                "replacement": "urgent",
+                "position": "inside",
+            }
+        )
 

@@ -9,6 +9,7 @@ description = "LangGraph agent for precise Microsoft Word document edits"
 requires-python = ">=3.11"
 dependencies = [
   "langgraph>=0.2.0,<1.0",
+  "langchain-openai>=0.2.0,<2.0",
   "python-docx>=1.1.0,<2.0",
 ]
 
