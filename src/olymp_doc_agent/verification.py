@@ -6,14 +6,6 @@ from docx.document import Document as DocumentType
 from .editor import iter_paragraphs, paragraph_plain_text
 
 
-def _sha256(path: str) -> str:
-    digest = hashlib.sha256()
-    with open(path, "rb") as handle:
-        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
-            digest.update(chunk)
-    return digest.hexdigest()
-
-
 def package_media(document: DocumentType) -> list[str]:
     package = document.part.package
     media = []

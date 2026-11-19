@@ -57,10 +57,16 @@ The runtime does not expose shell access or general code execution. All document
 ## Testing
 
 ```powershell
-pytest -q
+python -m pytest -q
 ```
 
 The tests cover replacement, removal, insertion, formatted text, tables, images, headers, ambiguity, and package integrity.
+
+The sample document demonstrates replacement of `weekly` with `monthly`; the original table and header remain unchanged. Run:
+
+```powershell
+python -m olymp_doc_agent.cli sample\clinical_note.docx "Replace 'weekly' with 'monthly'" sample\clinical_note_edited.docx
+```
 
 ## Known limitations
 

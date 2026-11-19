@@ -1,5 +1,4 @@
-from dataclasses import dataclass
-from typing import Iterable, Iterator
+from typing import Iterator
 
 from docx.document import Document as DocumentType
 from docx.table import _Cell, Table
@@ -9,13 +8,6 @@ from lxml import etree
 from .models import EditOperation
 
 W_NS = "http://schemas.openxmlformats.org/wordprocessingml/2006/main"
-NS = {"w": W_NS}
-
-
-@dataclass
-class EditResult:
-    matched: int
-    operations_applied: int
 
 
 def iter_paragraphs(document: DocumentType) -> Iterator[Paragraph]:

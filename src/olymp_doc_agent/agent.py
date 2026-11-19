@@ -3,7 +3,6 @@ from pathlib import Path
 from docx import Document
 
 from .editor import apply_operation, count_matches
-from .models import EditOperation
 from .planner import plan_instruction
 from .verification import package_media, structural_signature, verify_input_output
 
