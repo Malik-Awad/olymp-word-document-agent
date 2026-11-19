@@ -1,6 +1,6 @@
 # OLYMP Word Document Editor
 
-This project implements a LangGraph-based agent that makes limited, auditable changes to existing `.docx` files. The runtime is provider-neutral and has no model API dependency: natural-language instructions are converted by a local planner into typed edit operations.
+This project implements a LangGraph-based agent that makes limited, auditable changes to existing `.docx` files. It has no model API dependency: natural-language instructions are converted by a local parser into typed edit operations, and only the Python editing tools modify the document.
 
 ## Setup
 
@@ -43,7 +43,7 @@ The LangGraph workflow is:
 3. `edit`: directly manipulates WordprocessingML text nodes with `python-docx`.
 4. `verify`: checks the target and document integrity invariants, saves to a new file, and compares key package properties.
 
-The runtime does not expose shell access or general code execution. All document changes are made only by the typed Python editing tools.
+The runtime does not expose shell access, general code execution, or model-generated code. All document changes are made only by the typed Python editing tools.
 
 ## Preservation approach
 
@@ -75,11 +75,4 @@ python -m olymp_doc_agent.cli sample\clinical_note.docx "Replace 'weekly' with '
 - Comments, SmartArt, and tracked changes may be retained but are not treated as editable content.
 - Natural-language support is limited to the documented quoted instruction formats.
 - Saving through `python-docx` can normalize some package internals even though it preserves normal Word document content and formatting.
-
-*** Add File: src/olymp_doc_agent/__init__.py
-"""AI-assisted, structure-preserving Word document editing."""
-
-from .agent import EditAgent
-
-__all__ = ["EditAgent"]
 
