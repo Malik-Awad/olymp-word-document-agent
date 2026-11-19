@@ -17,7 +17,7 @@ def test_agent_replaces_text_and_preserves_table(tmp_path):
     table.cell(0, 1).text = "Draft"
     document.save(input_path)
 
-    result = EditAgent(provider="fallback").run(
+    result = EditAgent().run(
         str(input_path),
         "Replace 'weekly' with 'biweekly'",
         str(output_path),
@@ -39,7 +39,7 @@ def test_agent_rejects_ambiguous_target(tmp_path):
     document.add_paragraph("Draft.")
     document.save(input_path)
 
-    result = EditAgent(provider="fallback").run(
+    result = EditAgent().run(
         str(input_path),
         "Remove 'Draft'",
         str(output_path),
@@ -60,7 +60,7 @@ def test_agent_preserves_image(tmp_path):
     document.add_picture(str(image_path), width=Inches(0.5))
     document.save(input_path)
 
-    result = EditAgent(provider="fallback").run(
+    result = EditAgent().run(
         str(input_path),
         "Replace 'small image' with 'diagram'",
         str(output_path),

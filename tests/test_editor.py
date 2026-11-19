@@ -10,7 +10,7 @@ from olymp_doc_agent.editor import (
     paragraph_plain_text,
 )
 from olymp_doc_agent.models import EditOperation
-from olymp_doc_agent.planner import fallback_plan
+from olymp_doc_agent.planner import plan_instruction
 
 
 def test_replace_preserves_run_formatting():
@@ -95,10 +95,10 @@ def test_duplicate_target_is_detected():
     assert count_matches(document, "weekly") == 2
 
 
-def test_fallback_planner_examples():
-    assert fallback_plan("Replace 'weekly' with 'monthly'")[0].replacement == "monthly"
-    assert fallback_plan("Remove 'Draft only.'")[0].action == "remove"
-    inserted = fallback_plan("Insert 'urgent ' before 'review'")
+def test_planner_examples():
+    assert plan_instruction("Replace 'weekly' with 'monthly'")[0].replacement == "monthly"
+    assert plan_instruction("Remove 'Draft only.'")[0].action == "remove"
+    inserted = plan_instruction("Insert 'urgent ' before 'review'")
     assert inserted[0].position == "before"
-    assert fallback_plan("Append 'Thank you.'")[0].position == "end"
+    assert plan_instruction("Append 'Thank you.'")[0].position == "end"
 

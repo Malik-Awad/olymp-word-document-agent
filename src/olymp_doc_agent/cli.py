@@ -10,15 +10,11 @@ def main() -> int:
     parser.add_argument("input", help="Input .docx file")
     parser.add_argument("instruction", help="Natural-language editing instruction")
     parser.add_argument("output", help="Output .docx file")
-    parser.add_argument("--provider", choices=["claude", "fallback"], default="claude")
-    parser.add_argument("--model", default=None)
     parser.add_argument("--json", action="store_true", help="Print the result as JSON")
     args = parser.parse_args()
 
     try:
-        result = EditAgent(provider=args.provider, model=args.model).run(
-            args.input, args.instruction, args.output
-        )
+        result = EditAgent().run(args.input, args.instruction, args.output)
         if result["error"]:
             if args.json:
                 print(json.dumps({"ok": False, "error": result["error"]}))

@@ -1,33 +1,14 @@
-from dataclasses import dataclass
 from pathlib import Path
 
 from docx import Document
 
 from .editor import apply_operation, count_matches
 from .models import EditOperation
-from .planner import claude_plan, fallback_plan
+from .planner import plan_instruction
 from .verification import package_media, structural_signature, verify_input_output
 
 
-@dataclass
-class AgentState:
-    input_path: str
-    output_path: str
-    instruction: str
-    provider: str
-    model: str | None = None
-    operations: list[EditOperation] | None = None
-    matches: int = 0
-    error: str | None = None
-
-
 class EditAgent:
-    def __init__(self, provider: str = "claude", model: str | None = None):
-        if provider not in {"claude", "fallback"}:
-            raise ValueError("provider must be 'claude' or 'fallback'")
-        self.provider = provider
-        self.model = model
-
     def run(self, input_path: str, instruction: str, output_path: str) -> dict:
         source = Path(input_path)
         destination = Path(output_path)
@@ -39,11 +20,7 @@ class EditAgent:
 
         def plan(state: dict) -> dict:
             try:
-                operations = (
-                    claude_plan(state["instruction"], state["model"])
-                    if state["provider"] == "claude"
-                    else fallback_plan(state["instruction"])
-                )
+                operations = plan_instruction(state["instruction"])
                 state["operations"] = operations
             except Exception as exc:
                 state["error"] = str(exc)
@@ -129,8 +106,6 @@ class EditAgent:
             "input_path": str(source),
             "output_path": str(destination),
             "instruction": instruction,
-            "provider": self.provider,
-            "model": self.model,
             "operations": None,
             "matches": 0,
             "error": None,
